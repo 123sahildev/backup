@@ -3,9 +3,7 @@ import cors from "cors";
 import userRoutes from "./routers/user.routes.js";
 
 const app = express();
-app.use(cors({
-    Credential: true
-}))
+app.use(cors())
 app.use(express.json());
 app.use("/api", userRoutes);
 

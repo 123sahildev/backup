@@ -11,10 +11,12 @@ export default function login({ setRegister, setLogin, setForgotPassword }) {
     const [password, setPassword] = useState(true);
     const [isUserNotFound, setUserNotFound] = useState({ render : false, status : true});
     const submit = async (data) => {
+        console.log(data)
         let response = await axios.get("http://localhost:3000/api/login",
-            data,
+            
             {
-                withCredentials: true
+                // withCredentials: true,
+                params: data
             }
          );
         if (!response.data.success) {
