@@ -2,11 +2,10 @@ import connection from "../config/mysql.js";
 
 const userLoginModel = async (data) => {
     try {
-        let [rows] = await connection.query("SELECT * FROM user WHERE email = ?", [data.email]);
+        let [rows] = await connection.query("SELECT * FROM user WHERE email = ?", [data]);
 
-        console.log("row result from loginModel.js :", rows)
         if (rows.length > 0) {
-            return {success: true, message: "user found", image_url: rows[0].profile_url}
+            return {success: true, message: "user found", data: rows[0]}
         }
         return {
             success: false,

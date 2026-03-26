@@ -6,7 +6,7 @@ import PasswordShow from "../assets/svgs/passwordShow";
 import ShowPassword from "../assets/svgs/showPassword.jsx";
 import axios from "axios";
 
-export default function login({ setRegister, setLogin, setForgotPassword }) {
+export default function login({ setRegister, setLogin, setForgotPassword, setProfileUrl }) {
     const { register, handleSubmit, formState : { errors }, reset } = useForm();
     const [password, setPassword] = useState(true);
     const [isUserNotFound, setUserNotFound] = useState({ render : false, status : true});
@@ -22,15 +22,14 @@ export default function login({ setRegister, setLogin, setForgotPassword }) {
         if (!response.data.success) {
             if (response.data.message === "user not found") {
                 console.log("usernot found")
-                console.log("login.jsx rejected :", response.data)
                 setUserNotFound({ render: true, status: false});
             }
         }
 
         if (response.data.success) {
             console.log("user found", response.data)
-            console.log("login.jsx :", response.data)
             setUserNotFound({render: true, status: true});
+            setProfileUrl(response.data.data.profile_url)
         }
     }
 
