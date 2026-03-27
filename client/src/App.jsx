@@ -4,6 +4,7 @@ import { set, useForm } from "react-hook-form"
 import Register from "./forms/register.jsx";
 import Login from "./forms/login.jsx";
 import { ForgotPassword } from "./forms/forgotPassword.jsx";
+import  profile from "../public/favicon.svg"
 
 const App = () => {
     const [profileUrl, setProfileUrl] = useState(null);
@@ -14,7 +15,7 @@ const App = () => {
 
     useEffect(() => {
       let getProfile = async () => {
-          let response = await axios.get("http://localhost:3000/api/get-profile",
+          let response = await axios.get("http://localhost:3000/api/user-access",
             {
               withCredentials: true
             }
@@ -41,7 +42,7 @@ const App = () => {
   return (
     <>
       <div className=" flex absolute left-10 top-10 w-auto h-auto rounded-[50%] bg-[yellow] p-2">
-        <img className="w-20 h-20 rounded-[50%]" src={preView || 'https://res.cloudinary.com/dgirecxqr/image/upload/v1774343171/user_images/profiles/njs5wmacis7rslxp05d3.jpg' } alt="" />
+        <img className="w-20 h-20 rounded-[50%]" src={preView ||  profile} alt="" />
         <input onChange={handleImageProcess} className="profile flex top-0 rounded-[50%]" type="file" placeholder="" />
       </div>
       <div className="absolute top-5 right-5 w-auto h-auto">

@@ -11,21 +11,16 @@ export default function login({ setRegister, setLogin, setForgotPassword, setPro
     const [password, setPassword] = useState(true);
     const [isUserNotFound, setUserNotFound] = useState({ render : false, status : true});
     const submit = async (data) => {
-        console.log(data)
-        let response = await axios.get("http://localhost:3000/api/login",
-            
+        let response = await axios.post("http://localhost:3000/api/login",
+            data,
             {
-                // withCredentials: true,
-                params: data
+                withCredentials: true
             }
          );
         if (!response.data.success) {
-            if (response.data.message === "user not found") {
-                console.log("usernot found")
                 setUserNotFound({ render: true, status: false});
-            }
         }
-
+        
         if (response.data.success) {
             console.log("user found", response.data)
             setUserNotFound({render: true, status: true});
