@@ -4,14 +4,14 @@ import { set, useForm } from "react-hook-form"
 import Register from "./forms/register.jsx";
 import Login from "./forms/login.jsx";
 import { ForgotPassword } from "./forms/forgotPassword.jsx";
-import  profile from "../public/favicon.svg"
 
 const App = () => {
-    const [profileUrl, setProfileUrl] = useState(null);
+    const [profileUrl, setProfileUrl] = useState(false);
     const [preView, setPreView] = useState(false);
     const [register, setRegister] = useState(true);
     const [login, setLogin] = useState(false);
     const [forgotPassword, setForgotPassword] = useState(false);
+    const [isUserLogin, setUserLogin] = useState(false);
 
     useEffect(() => {
       let getProfile = async () => {
@@ -20,8 +20,11 @@ const App = () => {
               withCredentials: true
             }
           );
-
-          console.log("get profile response data :", response.data);
+          console.log("frontend response :", response.data)
+          if (response.data.success) {
+            setUserLogin(true);
+            setProfileUrl(response.data.data.profile_url);
+          }
       }
 
       getProfile();
@@ -33,7 +36,11 @@ const App = () => {
       let formData = new FormData()
       formData.append("image", file)
       
-      let response = await axios.post("http://localhost:3000/api/upload-profile", formData);
+      let response = await axios.post("http://localhost:3000/api/upload-profile", formData,
+        {
+          withCredentials: true
+        }
+      );
       console.log("formData api response :", response.data);
       setPreView(preViewData);
     }
@@ -41,14 +48,15 @@ const App = () => {
 
   return (
     <>
-      <div className=" flex absolute left-10 top-10 w-auto h-auto rounded-[50%] bg-[yellow] p-2">
-        <img className="w-20 h-20 rounded-[50%]" src={preView ||  profile} alt="" />
+      { 
+        isUserLogin && <div className=" flex absolute left-10 top-10 w-auto h-auto rounded-[50%] bg-[yellow] p-2">
+        <img className="w-20 h-20 rounded-[50%]" src={preView ||  profileUrl} alt="" />
         <input onChange={handleImageProcess} className="profile flex top-0 rounded-[50%]" type="file" placeholder="" />
       </div>
-      <div className="absolute top-5 right-5 w-auto h-auto">
-      </div>
+      }
+      
       {register && <Register setRegister={setRegister} setLogin={setLogin} />}
-      {login && <Login setLogin={setLogin} setRegister={setRegister} setForgotPassword={setForgotPassword} setProfileUrl={setProfileUrl} />}
+      {login && <Login setLogin={setLogin} setUserLogin={setUserLogin} setRegister={setRegister} setForgotPassword={setForgotPassword} setProfileUrl={setProfileUrl} />}
       {forgotPassword && <ForgotPassword setForgotPassword={setForgotPassword} setRegister={setRegister} />}
     </>
   );

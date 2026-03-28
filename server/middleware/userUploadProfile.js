@@ -1,23 +1,23 @@
-import connection from "../config/mysql.js";
 import jwt from "jsonwebtoken";
-import userAccessModel from "../models/model.userAccess.js";
+import bycrpt from "bcrypt";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const userAccessMiddleware = async (req, res, next) => {
+const userUploadProfileMiddleware = async (req, res, next) => {
     try {
+       
         let refreshToken = req.cookies.refreshToken;
         // if (!refreshToken) return res.json({success: false, message: "token not found"});
         let decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
         req.id = decoded.user_id;
 
-
         next()
+
     } catch (error) {
-        res.json({success: false, message: "user unauthurized"});
-        console.log(error);
+        res.json({ success: false, message: "failed in userUploadMiddleware by parseing the user id"})
+        console.log(error)
     }
 }
 
-export default userAccessMiddleware;
+export default userUploadProfileMiddleware;

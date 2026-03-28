@@ -9,7 +9,9 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 });
 
-const cloudinaryStream = (fileBuffer) => {
+export default cloudinary;
+
+export const cloudinaryStream = (fileBuffer) => {
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
             { folder: "/user_images/profiles"},
@@ -18,8 +20,9 @@ const cloudinaryStream = (fileBuffer) => {
                 else reject(err); 
             }
         );
+
         stream.end(fileBuffer);
     })
 }
 
-export default cloudinaryStream;
+;
